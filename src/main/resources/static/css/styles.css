@@ -1,0 +1,143 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* BODY */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: linear-gradient(45deg, #3498db, #f1c40f);
+}
+
+/* CONTENIDO GENERAL */
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin-top: 100px; /* espacio por navbar */
+    text-align: center;
+}
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 15px 30px;
+
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+
+    color: white;
+    z-index: 1000;
+}
+
+/* LOGO */
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* LINKS */
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    transform: scale(1.1);
+}
+
+/* BOTON LOGOUT */
+.btn-logout {
+    background: #e74c3c;
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+/* MENU HAMBURGUESA */
+.menu-toggle {
+    display: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* TARJETAS / FORMULARIOS */
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px 0;
+    width: 100%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* BOTONES */
+button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #2980b9;
+}
+
+/* INPUTS */
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 768px) {
+
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 100%;
+
+        flex-direction: column;
+        align-items: center;
+
+        background: rgba(0,0,0,0.8);
+
+        display: none;
+        padding: 20px 0;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+}

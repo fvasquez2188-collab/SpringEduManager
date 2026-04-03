@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>Cursos</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <div class="logo">📚 EduManager</div>
+
+    <div class="nav-links" id="navLinks">
+        <a th:href="@{/cursos}">Cursos</a>
+        <a th:href="@{/estudiantes}">Estudiantes</a>
+
+        <!-- SOLO ADMIN -->
+        <a th:href="@{/cursos/nuevo}" sec:authorize="hasRole('ADMIN')">Nuevo Curso</a>
+        <a th:href="@{/estudiantes/nuevo}" sec:authorize="hasRole('ADMIN')">Nuevo Estudiante</a>
+
+        <a href="#" onclick="confirmarLogout()" class="btn-logout">Salir</a>
+    </div>
+
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+</div>
+
+<!-- CONTENIDO -->
+<div class="container mt-5 pt-4">
+
+    <h2 class="mb-4">📚 Lista de Cursos</h2>
+
+    <!-- BOTÓN SOLO ADMIN -->
+    <a th:href="@{/cursos/nuevo}" 
+       class="btn btn-success mb-3"
+       sec:authorize="hasRole('ADMIN')">
+       ➕ Nuevo Curso
+    </a>
+
+    <!-- TABLA -->
+    <table class="table table-striped table-hover shadow">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Ver</th>
+                <th sec:authorize="hasRole('ADMIN')">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="c : ${cursos}">
+                <td th:text="${c.id}"></td>
+                <td th:text="${c.nombre}"></td>
+
+                <!-- VER DETALLE -->
+                <td>
+                    <a th:href="@{/cursos/{id}(id=${c.id})}" 
+                       class="btn btn-info btn-sm">
+                       👁 Ver
+                    </a>
+                </td>
+
+                <!-- SOLO ADMIN -->
+                <td sec:authorize="hasRole('ADMIN')">
+                    <a href="#"
+                       class="btn btn-danger btn-sm"
+                       th:onclick="'confirmarEliminarCurso(' + ${c.id} + ')'">
+                       🗑 Eliminar
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+
+<!-- SCRIPTS -->
+<script>
+function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("active");
+}
+
+function confirmarEliminarCurso(id) {
+    Swal.fire({
+        title: "¿Eliminar curso?",
+        text: "Se eliminarán también sus estudiantes",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#e74c3c",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/cursos/eliminar/" + id;
+        }
+    });
+}
+
+function confirmarLogout() {
+    Swal.fire({
+        title: "¿Cerrar sesión?",
+        text: "Serás redirigido al login",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Sí, salir",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = "/logout";
+        }
+    });
+}
+</script>
+
+<!-- MENSAJE DE ELIMINACIÓN -->
+<script th:if="${param.eliminado}">
+    Swal.fire("Eliminado", "Curso eliminado correctamente", "success");
+</script>
+
+</body>
+</html>
